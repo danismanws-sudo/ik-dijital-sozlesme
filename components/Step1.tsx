@@ -19,7 +19,7 @@ export default function Step1() {
           className="mt-1 block w-full rounded border-gray-300"
         />
         {errors.projectName && (
-          <p className="text-red-600 text-sm">{errors.projectName.message}</p>
+          <p className="text-red-600 text-sm">{errors.projectName.message as string}</p>
         )}
       </label>
 
@@ -40,7 +40,7 @@ export default function Step1() {
             )}
           />
           {errors.startDate && (
-            <p className="text-red-600 text-sm">{errors.startDate.message}</p>
+            <p className="text-red-600 text-sm">{errors.startDate.message as string}</p>
           )}
         </label>
 
@@ -60,7 +60,7 @@ export default function Step1() {
             )}
           />
           {errors.endDate && (
-            <p className="text-red-600 text-sm">{errors.endDate.message}</p>
+            <p className="text-red-600 text-sm">{errors.endDate.message as string}</p>
           )}
         </label>
       </div>
