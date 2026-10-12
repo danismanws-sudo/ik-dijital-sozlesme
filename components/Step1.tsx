@@ -72,7 +72,7 @@ export default function Step1() {
           className="mt-1 block w-full rounded border-gray-300"
         />
         {errors.fullName && (
-          <p className="text-red-600 text-sm">{errors.fullName.message}</p>
+          <p className="text-red-600 text-sm">{errors.fullName?.message as string}</p>
         )}
       </label>
 
@@ -84,7 +84,7 @@ export default function Step1() {
           className="mt-1 block w-full rounded border-gray-300"
         />
         {errors.tcNo && (
-          <p className="text-red-600 text-sm">{errors.tcNo.message}</p>
+          <p className="text-red-600 text-sm">{errors.tcNo.message as string}</p>
         )}
       </label>
 
@@ -96,7 +96,7 @@ export default function Step1() {
           className="mt-1 block w-full rounded border-gray-300"
         />
         {errors.phone && (
-          <p className="text-red-600 text-sm">{errors.phone.message}</p>
+          <p className="text-red-600 text-sm">{errors.phone.message as string}</p>
         )}
       </label>
 
@@ -116,7 +116,7 @@ export default function Step1() {
           )}
         />
         {errors.birthDate && (
-          <p className="text-red-600 text-sm">{errors.birthDate.message}</p>
+          <p className="text-red-600 text-sm">{errors.birthDate?.message as string}</p>
         )}
       </label>
     </div>
