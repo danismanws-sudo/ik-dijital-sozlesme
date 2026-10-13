@@ -14,9 +14,11 @@ export type FormValues = {
   phone: string;
   birthDate: string;
   // Step 2
-  manager: string;
-  status: "Aktif" | "Pasif";
-  district: string;
+  maritalStatus: string;
+  bloodType: string;
+  fullAddress: string;
+  emergencyContactName: string;
+  emergencyContactPhone: string;
   iban: string;
   // Step 3
   criminalRecord?: string;

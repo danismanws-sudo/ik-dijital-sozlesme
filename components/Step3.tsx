@@ -1,24 +1,70 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-/**
- * Placeholder Step3 component.
- * Add real fields as needed. Includes proper error handling with cast to string.
- */
 export default function Step3() {
-  const { register, formState: { errors } } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <div className="grid gap-4">
+      {/* Kimlik Ön Yüzü */}
       <label className="block">
-        <span className="text-sm font-medium">Örnek Alan 3</span>
+        <span className="text-sm font-medium">Kimlik Ön Yüzü</span>
         <input
-          {...register('exampleField3')}
-          className="mt-1 block w-full rounded border-gray-300"
+          type="file"
+          {...register('idFront')}
+          className="mt-1 block w-full"
         />
-        {errors.exampleField3 && (
+        {errors.idFront && (
           <p className="text-red-600 text-sm">
-            {errors.exampleField3?.message as string}
+            {errors.idFront?.message as string}
+          </p>
+        )}
+      </label>
+
+      {/* Kimlik Arka Yüzü */}
+      <label className="block">
+        <span className="text-sm font-medium">Kimlik Arka Yüzü</span>
+        <input
+          type="file"
+          {...register('idBack')}
+          className="mt-1 block w-full"
+        />
+        {errors.idBack && (
+          <p className="text-red-600 text-sm">
+            {errors.idBack?.message as string}
+          </p>
+        )}
+      </label>
+
+      {/* Vesikalık Fotoğraf */}
+      <label className="block">
+        <span className="text-sm font-medium">Vesikalık Fotoğraf</span>
+        <input
+          type="file"
+          {...register('passportPhoto')}
+          className="mt-1 block w-full"
+        />
+        {errors.passportPhoto && (
+          <p className="text-red-600 text-sm">
+            {errors.passportPhoto?.message as string}
+          </p>
+        )}
+      </label>
+
+      {/* Adli Sicil Kaydı */}
+      <label className="block">
+        <span className="text-sm font-medium">Adli Sicil Kaydı</span>
+        <input
+          type="file"
+          {...register('criminalRecord')}
+          className="mt-1 block w-full"
+        />
+        {errors.criminalRecord && (
+          <p className="text-red-600 text-sm">
+            {errors.criminalRecord?.message as string}
           </p>
         )}
       </label>
