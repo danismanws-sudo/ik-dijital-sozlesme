@@ -40,10 +40,9 @@ export default function Home() {
     resolver: yupResolver(combinedSchema),
     mode: "onBlur",
     defaultValues: {
-      status: "Aktif",
-      contractAccepted: false,
-      infoConfirmed: false,
-    },
+    contractAccepted: false,
+    infoConfirmed: false,
+  },
   });
 
   return (
