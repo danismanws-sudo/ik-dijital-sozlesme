@@ -8,17 +8,17 @@ export default function Step3() {
   } = useFormContext();
 
   return (
-    <div className="bg-slate-50 p-6 rounded-xl shadow-lg grid gap-4">
+    <div className="step-card">
       {/* Kimlik Ön Yüzü */}
       <label className="block">
-        <span className="text-sm font-medium">Kimlik Ön Yüzü</span>
+        <span className="field-label">Kimlik Ön Yüzü</span>
         <input
           type="file"
           {...register('idFront')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.idFront && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.idFront?.message as string}
           </p>
         )}
@@ -26,14 +26,14 @@ export default function Step3() {
 
       {/* Kimlik Arka Yüzü */}
       <label className="block">
-        <span className="text-sm font-medium">Kimlik Arka Yüzü</span>
+        <span className="field-label">Kimlik Arka Yüzü</span>
         <input
           type="file"
           {...register('idBack')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.idBack && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.idBack?.message as string}
           </p>
         )}
@@ -41,14 +41,14 @@ export default function Step3() {
 
       {/* Vesikalık Fotoğraf */}
       <label className="block">
-        <span className="text-sm font-medium">Vesikalık Fotoğraf</span>
+        <span className="field-label">Vesikalık Fotoğraf</span>
         <input
           type="file"
           {...register('passportPhoto')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.passportPhoto && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.passportPhoto?.message as string}
           </p>
         )}
@@ -56,14 +56,14 @@ export default function Step3() {
 
       {/* Adli Sicil Kaydı */}
       <label className="block">
-        <span className="text-sm font-medium">Adli Sicil Kaydı</span>
+        <span className="field-label">Adli Sicil Kaydı</span>
         <input
           type="file"
           {...register('criminalRecord')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.criminalRecord && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.criminalRecord?.message as string}
           </p>
         )}

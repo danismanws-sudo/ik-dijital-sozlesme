@@ -1,3 +1,57 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen text-slate-800 antialiased;
+    background: linear-gradient(160deg, #eef2ff 0%, #fdf4ff 50%, #fff1f2 100%) fixed;
+  }
+}
+
+@layer components {
+  .step-card {
+    @apply grid gap-5;
+  }
+
+  .field-label {
+    @apply block text-sm font-semibold text-slate-700;
+  }
+
+  .field-input {
+    @apply mt-1.5 block w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-4 focus:ring-primary/20;
+  }
+
+  .field-input[type="file"] {
+    @apply cursor-pointer border-2 border-dashed border-indigo-200 bg-indigo-50/50 p-2 text-sm text-slate-600 file:mr-4 file:cursor-pointer file:rounded-lg file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:border-primary/50 hover:file:bg-primary-dark;
+  }
+
+  .field-error {
+    @apply mt-1.5 text-sm font-medium text-accent;
+  }
+
+  .check-row {
+    @apply flex cursor-pointer flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition hover:border-primary/40 hover:bg-indigo-50/40;
+  }
+
+  .check-row .field-error {
+    @apply mt-0 basis-full;
+  }
+
+  .check-box {
+    @apply -order-1 h-5 w-5 cursor-pointer;
+    accent-color: theme("colors.primary.DEFAULT");
+  }
+
+  .btn-primary {
+    @apply rounded-xl bg-gradient-to-r from-primary to-accent px-6 py-2.5 font-semibold text-white shadow-lg shadow-primary/25 transition hover:brightness-110 focus:outline-none focus:ring-4 focus:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply rounded-xl border border-slate-200 bg-white px-6 py-2.5 font-semibold text-primary transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-primary/20;
+  }
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}

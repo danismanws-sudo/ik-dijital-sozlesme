@@ -8,16 +8,16 @@ export default function Step2() {
   } = useFormContext();
 
   return (
-    <div className="bg-slate-50 p-6 rounded-xl shadow-lg grid gap-4">
+    <div className="step-card">
       {/* Medeni Hal */}
       <label className="block">
-        <span className="text-sm font-medium">Medeni Hal</span>
+        <span className="field-label">Medeni Hal</span>
         <input
           {...register('maritalStatus')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.maritalStatus && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.maritalStatus?.message as string}
           </p>
         )}
@@ -25,13 +25,13 @@ export default function Step2() {
 
       {/* Kan Grubu */}
       <label className="block">
-        <span className="text-sm font-medium">Kan Grubu</span>
+        <span className="field-label">Kan Grubu</span>
         <input
           {...register('bloodType')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.bloodType && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.bloodType?.message as string}
           </p>
         )}
@@ -39,13 +39,13 @@ export default function Step2() {
 
       {/* Tam Adres */}
       <label className="block">
-        <span className="text-sm font-medium">Tam Adres</span>
+        <span className="field-label">Tam Adres</span>
         <input
           {...register('fullAddress')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.fullAddress && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.fullAddress?.message as string}
           </p>
         )}
@@ -53,13 +53,13 @@ export default function Step2() {
 
       {/* Acil Durum Kişisi - Ad Soyad */}
       <label className="block">
-        <span className="text-sm font-medium">Acil Durum Kişisi (Ad Soyad)</span>
+        <span className="field-label">Acil Durum Kişisi (Ad Soyad)</span>
         <input
           {...register('emergencyContactName')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.emergencyContactName && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.emergencyContactName?.message as string}
           </p>
         )}
@@ -67,13 +67,13 @@ export default function Step2() {
 
       {/* Acil Durum Kişisi - Telefon */}
       <label className="block">
-        <span className="text-sm font-medium">Acil Durum Kişisi (Telefon)</span>
+        <span className="field-label">Acil Durum Kişisi (Telefon)</span>
         <input
           {...register('emergencyContactPhone')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.emergencyContactPhone && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.emergencyContactPhone?.message as string}
           </p>
         )}
@@ -81,13 +81,13 @@ export default function Step2() {
 
       {/* IBAN */}
       <label className="block">
-        <span className="text-sm font-medium">IBAN</span>
+        <span className="field-label">IBAN</span>
         <input
           {...register('iban')}
-          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
+          className="field-input"
         />
         {errors.iban && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.iban?.message as string}
           </p>
         )}

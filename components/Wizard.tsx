@@ -48,23 +48,27 @@ export default function Wizard() {
   const CurrentStep = steps[current].component;
 
   return (
-    <div className="relative p-6 bg-white rounded-lg shadow">
+    <div className="relative rounded-3xl bg-white p-5 shadow-xl shadow-primary/10 ring-1 ring-slate-100 sm:p-8">
       <ProgressBar steps={steps} active={current} />
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
+        <h2 className="mb-5 flex items-center gap-3 text-lg font-bold text-primary">
+          <span className="h-6 w-1.5 rounded-full bg-gradient-to-b from-primary to-accent" />
+          {steps[current].label}
+        </h2>
         <CurrentStep />
         <div className="flex justify-between mt-8">
           {current > 0 && (
-            <button type="button" onClick={onPrev} className="px-4 py-2 bg-gray-200 text-primary rounded">
+            <button type="button" onClick={onPrev} className="btn-secondary">
               Geri
             </button>
           )}
           {current < steps.length - 1 && (
-            <button type="button" onClick={onNext} className="ml-auto px-4 py-2 bg-accent text-white rounded">
+            <button type="button" onClick={onNext} className="btn-primary ml-auto">
               İleri
             </button>
           )}
           {current === steps.length - 1 && (
-            <button type="submit" disabled={submitting} className="ml-auto px-4 py-2 bg-accent text-white rounded disabled:opacity-50">
+            <button type="submit" disabled={submitting} className="btn-primary ml-auto">
               Gönder
             </button>
           )}

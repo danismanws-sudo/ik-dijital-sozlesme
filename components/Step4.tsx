@@ -5,32 +5,32 @@ export default function Step4() {
   const { register, formState: { errors } } = useFormContext();
 
   return (
-    <div className="bg-slate-50 p-6 rounded-xl shadow-lg grid gap-4">
+    <div className="step-card">
       {/* Sözleşme Onay (checkbox) */}
-      <label className="block">
-        <span className="text-sm font-medium">Sözleşme Onay</span>
+      <label className="check-row">
+        <span className="field-label">Sözleşme Onay</span>
         <input
           type="checkbox"
           {...register('contractAccepted')}
-          className="mt-1"
+          className="check-box"
         />
         {errors.contractAccepted && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.contractAccepted?.message as string}
           </p>
         )}
       </label>
 
       {/* KVKK Onay (checkbox) */}
-      <label className="block">
-        <span className="text-sm font-medium">KVKK Onay</span>
+      <label className="check-row">
+        <span className="field-label">KVKK Onay</span>
         <input
           type="checkbox"
           {...register('infoConfirmed')}
-          className="mt-1"
+          className="check-box"
         />
         {errors.infoConfirmed && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.infoConfirmed?.message as string}
           </p>
         )}
@@ -38,13 +38,13 @@ export default function Step4() {
 
       {/* Dijital İmza (text) */}
       <label className="block">
-        <span className="text-sm font-medium">Dijital İmza (Ad Soyad)</span>
+        <span className="field-label">Dijital İmza (Ad Soyad)</span>
         <input
           {...register('signature')}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="field-input"
         />
         {errors.signature && (
-          <p className="text-red-600 text-sm">
+          <p className="field-error">
             {errors.signature?.message as string}
           </p>
         )}

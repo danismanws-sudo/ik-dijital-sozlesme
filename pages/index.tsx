@@ -47,8 +47,14 @@ export default function Home() {
 
   return (
     <FormProvider {...methods}>
-      <main className="max-w-2xl mx-auto py-8 px-4">
-        <img src="/logo.png" alt="Logo" className="w-48 mx-auto mb-8" />
+      <header className="bg-gradient-to-br from-primary via-indigo-600 to-accent px-4 pb-28 pt-10 text-center text-white">
+        <div className="mx-auto inline-block rounded-2xl bg-white px-4 shadow-xl">
+          <img src="/LOGO/LOGO%202.jpg" alt="Detay Stok Sayım" className="h-24 w-auto" />
+        </div>
+        <h1 className="mt-6 text-2xl font-extrabold tracking-tight sm:text-3xl">Dijital Sözleşme Formu</h1>
+        <p className="mt-2 text-sm text-white/80 sm:text-base">Bilgilerinizi 4 adımda doldurup sözleşmenizi imzalayın.</p>
+      </header>
+      <main className="mx-auto -mt-20 max-w-2xl px-4 pb-12">
         <Wizard />
       </main>
     </FormProvider>
