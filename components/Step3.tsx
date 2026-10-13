@@ -8,14 +8,14 @@ export default function Step3() {
   } = useFormContext();
 
   return (
-    <div className="grid gap-4">
+    <div className="bg-slate-50 p-6 rounded-xl shadow-lg grid gap-4">
       {/* Kimlik Ön Yüzü */}
       <label className="block">
         <span className="text-sm font-medium">Kimlik Ön Yüzü</span>
         <input
           type="file"
           {...register('idFront')}
-          className="mt-1 block w-full"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.idFront && (
           <p className="text-red-600 text-sm">
@@ -30,7 +30,7 @@ export default function Step3() {
         <input
           type="file"
           {...register('idBack')}
-          className="mt-1 block w-full"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.idBack && (
           <p className="text-red-600 text-sm">
@@ -45,7 +45,7 @@ export default function Step3() {
         <input
           type="file"
           {...register('passportPhoto')}
-          className="mt-1 block w-full"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.passportPhoto && (
           <p className="text-red-600 text-sm">
@@ -60,7 +60,7 @@ export default function Step3() {
         <input
           type="file"
           {...register('criminalRecord')}
-          className="mt-1 block w-full"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.criminalRecord && (
           <p className="text-red-600 text-sm">

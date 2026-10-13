@@ -5,7 +5,7 @@ export default function Step4() {
   const { register, formState: { errors } } = useFormContext();
 
   return (
-    <div className="grid gap-4">
+    <div className="bg-slate-50 p-6 rounded-xl shadow-lg grid gap-4">
       {/* Sözleşme Onay (checkbox) */}
       <label className="block">
         <span className="text-sm font-medium">Sözleşme Onay</span>

@@ -8,13 +8,13 @@ export default function Step2() {
   } = useFormContext();
 
   return (
-    <div className="grid gap-4">
+    <div className="bg-slate-50 p-6 rounded-xl shadow-lg grid gap-4">
       {/* Medeni Hal */}
       <label className="block">
         <span className="text-sm font-medium">Medeni Hal</span>
         <input
           {...register('maritalStatus')}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.maritalStatus && (
           <p className="text-red-600 text-sm">
@@ -28,7 +28,7 @@ export default function Step2() {
         <span className="text-sm font-medium">Kan Grubu</span>
         <input
           {...register('bloodType')}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.bloodType && (
           <p className="text-red-600 text-sm">
@@ -42,7 +42,7 @@ export default function Step2() {
         <span className="text-sm font-medium">Tam Adres</span>
         <input
           {...register('fullAddress')}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.fullAddress && (
           <p className="text-red-600 text-sm">
@@ -56,7 +56,7 @@ export default function Step2() {
         <span className="text-sm font-medium">Acil Durum Kişisi (Ad Soyad)</span>
         <input
           {...register('emergencyContactName')}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.emergencyContactName && (
           <p className="text-red-600 text-sm">
@@ -70,7 +70,7 @@ export default function Step2() {
         <span className="text-sm font-medium">Acil Durum Kişisi (Telefon)</span>
         <input
           {...register('emergencyContactPhone')}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.emergencyContactPhone && (
           <p className="text-red-600 text-sm">
@@ -84,7 +84,7 @@ export default function Step2() {
         <span className="text-sm font-medium">IBAN</span>
         <input
           {...register('iban')}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.iban && (
           <p className="text-red-600 text-sm">

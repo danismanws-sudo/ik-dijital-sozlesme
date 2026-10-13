@@ -11,12 +11,12 @@ export default function Step1() {
   } = useFormContext();
 
   return (
-    <div className="grid gap-4">
+    <div className="bg-slate-50 p-6 rounded-xl shadow-lg grid gap-4">
       <label className="block">
         <span className="text-sm font-medium">Proje Adı</span>
         <input
           {...register("projectName")}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.projectName && (
           <p className="text-red-600 text-sm">{errors.projectName.message as string}</p>
@@ -35,7 +35,7 @@ export default function Step1() {
                 selected={field.value ? new Date(field.value) : null}
                 onChange={(date) => field.onChange(date?.toISOString())}
                 dateFormat="yyyy-MM-dd"
-                className="mt-1 block w-full rounded border-gray-300"
+                className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
               />
             )}
           />
@@ -55,7 +55,7 @@ export default function Step1() {
                 selected={field.value ? new Date(field.value) : null}
                 onChange={(date) => field.onChange(date?.toISOString())}
                 dateFormat="yyyy-MM-dd"
-                className="mt-1 block w-full rounded border-gray-300"
+                className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
               />
             )}
           />
@@ -69,7 +69,7 @@ export default function Step1() {
         <span className="text-sm font-medium">İsim Soyisim</span>
         <input
           {...register("fullName")}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.fullName && (
           <p className="text-red-600 text-sm">{errors.fullName?.message as string}</p>
@@ -81,7 +81,7 @@ export default function Step1() {
         <input
           {...register("tcNo")}
           maxLength={11}
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.tcNo && (
           <p className="text-red-600 text-sm">{errors.tcNo.message as string}</p>
@@ -93,7 +93,7 @@ export default function Step1() {
         <input
           {...register("phone")}
           placeholder="05XX XXX XX XX"
-          className="mt-1 block w-full rounded border-gray-300"
+          className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
         />
         {errors.phone && (
           <p className="text-red-600 text-sm">{errors.phone.message as string}</p>
@@ -111,7 +111,7 @@ export default function Step1() {
               selected={field.value ? new Date(field.value) : null}
               onChange={(date) => field.onChange(date?.toISOString())}
               dateFormat="yyyy-MM-dd"
-              className="mt-1 block w-full rounded border-gray-300"
+              className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm"
             />
           )}
         />
