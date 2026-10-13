@@ -48,6 +48,7 @@ export default function Home() {
   return (
     <FormProvider {...methods}>
       <main className="max-w-2xl mx-auto py-8 px-4">
+        <img src="/logo.png" alt="Logo" className="w-48 mx-auto mb-8" />
         <Wizard />
       </main>
     </FormProvider>
