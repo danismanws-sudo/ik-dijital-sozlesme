@@ -7,12 +7,13 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
 import LoadingOverlay from "./LoadingOverlay";
+import { step1Schema, step2Schema, step3Schema, step4Schema } from "../lib/validationSchema";
 
 const steps = [
-  { id: 1, component: Step1, label: "Proje & Kimlik" },
-  { id: 2, component: Step2, label: "Operasyon & Finans" },
-  { id: 3, component: Step3, label: "Evrak Yükleme" },
-  { id: 4, component: Step4, label: "Sözleşme & İmza" },
+  { id: 1, component: Step1, label: "Proje & Kimlik", fields: Object.keys(step1Schema.fields) },
+  { id: 2, component: Step2, label: "Operasyon & Finans", fields: Object.keys(step2Schema.fields) },
+  { id: 3, component: Step3, label: "Evrak Yükleme", fields: Object.keys(step3Schema.fields) },
+  { id: 4, component: Step4, label: "Sözleşme & İmza", fields: Object.keys(step4Schema.fields) },
 ];
 
 export default function Wizard() {
@@ -21,7 +22,7 @@ export default function Wizard() {
   const [submitting, setSubmitting] = useState(false);
 
   const onNext = async () => {
-    const valid = await trigger();
+    const valid = await trigger(steps[current].fields);
     if (valid) setCurrent((c) => Math.min(c + 1, steps.length - 1));
   };
 

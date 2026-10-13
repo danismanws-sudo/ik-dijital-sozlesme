@@ -33,11 +33,14 @@ export const step2Schema = yup.object({
 /**
  * Validation schema for Step 3 – optional documentation uploads.
  */
+const requiredFile = (message: string) =>
+  yup.mixed().test('required', message, (value: any) => !!value && value.length > 0);
+
 export const step3Schema = yup.object({
-  criminalRecord: yup.mixed().required('Adli sicil kaydı zorunlu'),
-  idFront: yup.mixed().required('Kimlik ön yüzü zorunlu'),
-  idBack: yup.mixed().required('Kimlik arka yüzü zorunlu'),
-  passportPhoto: yup.mixed().required('Vesikalık fotoğraf zorunlu'),
+  criminalRecord: requiredFile('Adli sicil kaydı zorunlu'),
+  idFront: requiredFile('Kimlik ön yüzü zorunlu'),
+  idBack: requiredFile('Kimlik arka yüzü zorunlu'),
+  passportPhoto: requiredFile('Vesikalık fotoğraf zorunlu'),
 });
 
 /**
