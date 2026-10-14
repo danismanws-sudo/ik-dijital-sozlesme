@@ -1,53 +1,70 @@
 import * as yup from 'yup';
+import { parseDate } from './date';
+
+const requiredDate = (message: string) =>
+  yup
+    .string()
+    .required(message)
+    .test('date', 'Geçerli bir tarih giriniz (GG.AA.YYYY)', (value) => !value || !!parseDate(value));
+
+const requiredFile = (message: string) =>
+  yup.mixed().test('required', message, (value: any) => !!value && value.length > 0);
 
 /**
- * Validation schema for Step 1 – basic project and personal information.
+ * Validation schema for Step 1 – basic identity information.
  */
 export const step1Schema = yup.object({
-  projectName: yup.string().required('Proje adı zorunlu'),
-  startDate: yup.date().required('Başlangıç tarihi zorunlu'),
-  endDate: yup.date().required('Bitiş tarihi zorunlu'),
-  fullName: yup.string().required('İsim Soyisim zorunlu'),
+  hireDate: requiredDate('İşe giriş tarihi zorunlu'),
+  fullName: yup.string().trim().required('İsim Soyisim zorunlu'),
   tcNo: yup
     .string()
     .required('TC kimlik no zorunlu')
     .matches(/^\d{11}$/, 'TC kimlik no 11 rakam olmalı'),
-  phone: yup.string().required('Telefon zorunlu'),
-  birthDate: yup.date().required('Doğum tarihi zorunlu'),
+  phone: yup
+    .string()
+    .required('Telefon zorunlu')
+    .matches(/^5\d{9}$/, 'Telefon 5 ile başlayan 10 haneli olmalı (ör. 5321112233)'),
+  birthDate: requiredDate('Doğum tarihi zorunlu'),
 });
 
 /**
  * Validation schema for Step 2 – operation & finance fields.
- * Only the fields that exist in the current UI are required; the rest are optional
- * (they will be filled in later steps of the wizard).
  */
 export const step2Schema = yup.object({
-  maritalStatus: yup.string().required('Medeni hal zorunlu'),
-  bloodType: yup.string().required('Kan grubu zorunlu'),
-  fullAddress: yup.string().required('Tam adres zorunlu'),
-  emergencyContactName: yup.string().required('Acil durum kişi adı zorunlu'),
-  emergencyContactPhone: yup.string().required('Acil durum kişi telefonu zorunlu'),
-  iban: yup.string().required('IBAN zorunlu'),
+  managerName: yup.string().trim().required('Sorumlu yönetici zorunlu'),
+  status: yup.string().oneOf(['Aktif', 'Pasif'], 'Durum seçiniz').required('Durum seçiniz'),
+  district: yup.string().trim().required('Oturduğu semt zorunlu'),
+  iban: yup
+    .string()
+    .required('IBAN zorunlu')
+    .matches(/^TR\d{24}$/, 'IBAN TR ile başlamalı ve boşluksuz tam 26 karakter olmalı'),
 });
 
 /**
- * Validation schema for Step 3 – optional documentation uploads.
+ * Validation schema for Step 3 – document uploads.
  */
-const requiredFile = (message: string) =>
-  yup.mixed().test('required', message, (value: any) => !!value && value.length > 0);
-
 export const step3Schema = yup.object({
   criminalRecord: requiredFile('Adli sicil kaydı zorunlu'),
   idFront: requiredFile('Kimlik ön yüzü zorunlu'),
   idBack: requiredFile('Kimlik arka yüzü zorunlu'),
-  passportPhoto: requiredFile('Vesikalık fotoğraf zorunlu'),
 });
 
 /**
- * Validation schema for Step 4 – final confirmation and signature.
+ * Validation schema for Step 4 – contract, job dates, declaration and signature.
  */
 export const step4Schema = yup.object({
   contractAccepted: yup.boolean().oneOf([true], 'Sözleşme kabul edilmelidir').required(),
-  infoConfirmed: yup.boolean().oneOf([true], 'KVKK onayı zorunlu').required(),
-  signature: yup.string().required('İmza zorunlu'),
+  projectName: yup.string().trim().required('Proje / mağaza adı zorunlu'),
+  startDate: requiredDate('İş başlangıç tarihi zorunlu'),
+  endDate: requiredDate('İş bitiş tarihi zorunlu').test(
+    'after-start',
+    'Bitiş tarihi başlangıç tarihinden önce olamaz',
+    function (value) {
+      const start = parseDate(this.parent.startDate);
+      const end = parseDate(value);
+      return !start || !end || end >= start;
+    }
+  ),
+  infoConfirmed: yup.boolean().oneOf([true], 'Beyan onayı zorunlu').required(),
+  signature: yup.string().required('Lütfen imzanızı çiziniz'),
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import Field from './Field';
 
 export default function Step2() {
   const {
@@ -9,89 +10,40 @@ export default function Step2() {
 
   return (
     <div className="step-card">
-      {/* Medeni Hal */}
-      <label className="block">
-        <span className="field-label">Medeni Hal</span>
-        <input
-          {...register('maritalStatus')}
-          className="field-input"
-        />
-        {errors.maritalStatus && (
-          <p className="field-error">
-            {errors.maritalStatus?.message as string}
-          </p>
-        )}
-      </label>
+      <Field label="Sorumlu Yönetici" required error={errors.managerName}>
+        <input {...register('managerName')} className="field-input" />
+      </Field>
 
-      {/* Kan Grubu */}
-      <label className="block">
-        <span className="field-label">Kan Grubu</span>
-        <input
-          {...register('bloodType')}
-          className="field-input"
-        />
-        {errors.bloodType && (
-          <p className="field-error">
-            {errors.bloodType?.message as string}
-          </p>
-        )}
-      </label>
+      <Field label="Durumu" required error={errors.status}>
+        <select {...register('status')} className="field-input">
+          <option value="" disabled>
+            Seçiniz
+          </option>
+          <option value="Aktif">Aktif</option>
+          <option value="Pasif">Pasif</option>
+        </select>
+      </Field>
 
-      {/* Tam Adres */}
-      <label className="block">
-        <span className="field-label">Tam Adres</span>
-        <input
-          {...register('fullAddress')}
-          className="field-input"
-        />
-        {errors.fullAddress && (
-          <p className="field-error">
-            {errors.fullAddress?.message as string}
-          </p>
-        )}
-      </label>
+      <Field label="Oturduğu Semt" required error={errors.district}>
+        <input {...register('district')} className="field-input" />
+      </Field>
 
-      {/* Acil Durum Kişisi - Ad Soyad */}
-      <label className="block">
-        <span className="field-label">Acil Durum Kişisi (Ad Soyad)</span>
-        <input
-          {...register('emergencyContactName')}
-          className="field-input"
-        />
-        {errors.emergencyContactName && (
-          <p className="field-error">
-            {errors.emergencyContactName?.message as string}
-          </p>
-        )}
-      </label>
-
-      {/* Acil Durum Kişisi - Telefon */}
-      <label className="block">
-        <span className="field-label">Acil Durum Kişisi (Telefon)</span>
-        <input
-          {...register('emergencyContactPhone')}
-          className="field-input"
-        />
-        {errors.emergencyContactPhone && (
-          <p className="field-error">
-            {errors.emergencyContactPhone?.message as string}
-          </p>
-        )}
-      </label>
-
-      {/* IBAN */}
-      <label className="block">
-        <span className="field-label">IBAN</span>
+      <Field
+        label="IBAN Bilgisi (Başında TR ile 26 Karakter)"
+        required
+        hint="TR dahil, hiç boşluk bırakmadan tam 26 hane olacak şekilde giriniz"
+        error={errors.iban}
+      >
         <input
           {...register('iban')}
-          className="field-input"
+          maxLength={26}
+          placeholder="TR000000000000000000000000"
+          onInput={(e) => {
+            e.currentTarget.value = e.currentTarget.value.toUpperCase().replace(/\s/g, '');
+          }}
+          className="field-input font-mono tracking-wide"
         />
-        {errors.iban && (
-          <p className="field-error">
-            {errors.iban?.message as string}
-          </p>
-        )}
-      </label>
+      </Field>
     </div>
   );
 }

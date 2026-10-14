@@ -5,27 +5,26 @@ import Wizard from "../components/Wizard";
 import { step1Schema, step2Schema, step3Schema, step4Schema } from "../lib/validationSchema";
 
 export type FormValues = {
-  // Step 1
-  projectName: string;
-  startDate: string;
-  endDate: string;
+  // Step 1 – dates are "dd.MM.yyyy" strings, phone is 10 digits without +90
+  hireDate: string;
   fullName: string;
   tcNo: string;
   phone: string;
   birthDate: string;
   // Step 2
-  maritalStatus: string;
-  bloodType: string;
-  fullAddress: string;
-  emergencyContactName: string;
-  emergencyContactPhone: string;
+  managerName: string;
+  status: string;
+  district: string;
   iban: string;
   // Step 3
-  criminalRecord?: string;
-  idFront?: string;
-  idBack?: string;
+  criminalRecord?: FileList;
+  idFront?: FileList;
+  idBack?: FileList;
   // Step 4
   contractAccepted: boolean;
+  projectName: string;
+  startDate: string;
+  endDate: string;
   infoConfirmed: boolean;
   signature?: string;
 };
@@ -40,9 +39,10 @@ export default function Home() {
     resolver: yupResolver(combinedSchema),
     mode: "onBlur",
     defaultValues: {
-    contractAccepted: false,
-    infoConfirmed: false,
-  },
+      status: "",
+      contractAccepted: false,
+      infoConfirmed: false,
+    },
   });
 
   return (
