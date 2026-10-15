@@ -34,10 +34,13 @@ export const step2Schema = yup.object({
   managerName: yup.string().trim().required('Sorumlu yönetici zorunlu'),
   status: yup.string().oneOf(['Aktif', 'Pasif'], 'Durum seçiniz').required('Durum seçiniz'),
   district: yup.string().trim().required('Oturduğu semt zorunlu'),
+  // The input holds only the 24 digits; "TR" is a fixed prefix added here,
+  // so the submitted value is the full 26-character IBAN.
   iban: yup
     .string()
+    .transform((value) => (value ? `TR${value}` : value))
     .required('IBAN zorunlu')
-    .matches(/^TR\d{24}$/, 'IBAN TR ile başlamalı ve boşluksuz tam 26 karakter olmalı'),
+    .matches(/^TR\d{24}$/, "IBAN TR'den sonra 24 rakam olmalı"),
 });
 
 /**
