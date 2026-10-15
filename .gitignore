@@ -4,3 +4,7 @@ dist/
 .DS_Store
 .env.local
 .env.production
+.env*.local
+.claude/
+next-env.d.ts
+*.tsbuildinfo

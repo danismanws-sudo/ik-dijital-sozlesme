@@ -5,6 +5,51 @@ import Field from './Field';
 import DateField from './DateField';
 
 const CONTRACT_URL = '/belgeler/proje-bazli-is-sozlesmesi.pdf';
+const KVKK_URL = '/belgeler/kvkk-aydinlatma-metni.pdf';
+
+type LockedConsentProps = {
+  name: string;
+  documentUrl: string;
+  documentTitle: string;
+  intro: string;
+  children: React.ReactNode;
+};
+
+/** A document link plus a checkbox that stays locked until the document has been opened. */
+function LockedConsent({ name, documentUrl, documentTitle, intro, children }: LockedConsentProps) {
+  const {
+    register,
+    getValues,
+    formState: { errors },
+  } = useFormContext();
+  const [opened, setOpened] = useState<boolean>(!!getValues(name));
+
+  return (
+    <>
+      <div className="rounded-xl border border-indigo-100 bg-indigo-50/60 p-4">
+        <p className="text-sm text-slate-600">{intro}</p>
+        <a
+          href={documentUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => setOpened(true)}
+          className="mt-1 inline-block font-bold text-primary underline underline-offset-4 hover:text-accent"
+        >
+          {documentTitle}
+        </a>
+      </div>
+
+      <label className={`check-row items-start ${opened ? '' : 'cursor-not-allowed opacity-60'}`}>
+        <span className="flex-1 text-sm leading-relaxed">{children}</span>
+        <input type="checkbox" {...register(name)} disabled={!opened} className="check-box mt-0.5" />
+        {!opened && (
+          <p className="field-hint basis-full">Onay kutusunu işaretleyebilmek için önce belgeyi açınız.</p>
+        )}
+        {errors[name] && <p className="field-error">{errors[name]?.message as string}</p>}
+      </label>
+    </>
+  );
+}
 
 export default function Step4() {
   const {
@@ -13,8 +58,6 @@ export default function Step4() {
     getValues,
     formState: { errors },
   } = useFormContext();
-  // The contract checkbox stays locked until the PDF has been opened.
-  const [contractOpened, setContractOpened] = useState<boolean>(!!getValues('contractAccepted'));
   const signatureRef = useRef<any>(null);
 
   useEffect(() => {
@@ -34,38 +77,16 @@ export default function Step4() {
 
   return (
     <div className="step-card">
-      <div className="rounded-xl border border-indigo-100 bg-indigo-50/60 p-4">
-        <p className="text-sm text-slate-600">Lütfen onaylamadan önce sözleşmeyi açıp okuyunuz:</p>
-        <a
-          href={CONTRACT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => setContractOpened(true)}
-          className="mt-1 inline-block font-bold text-primary underline underline-offset-4 hover:text-accent"
-        >
-          PROJE BAZLI İŞ SÖZLEŞMESİ
-        </a>
-      </div>
-
-      <label className={`check-row items-start ${contractOpened ? '' : 'cursor-not-allowed opacity-60'}`}>
-        <span className="flex-1 text-sm leading-relaxed">
-          Yukarıdaki sözleşme maddelerini okudum. İşin proje bitimiyle sona ereceğini, sigortamın çalıştığım gün
-          kadar yatacağını, eksik/sahte belge beyanına ilişkin sonuçları ve &quot;%70 Kesinti dahil tüm Cezai
-          Şart&quot; maddelerini anladım, hür irademle kabul ediyorum.
-        </span>
-        <input
-          type="checkbox"
-          {...register('contractAccepted')}
-          disabled={!contractOpened}
-          className="check-box mt-0.5"
-        />
-        {!contractOpened && (
-          <p className="field-hint basis-full">Onay kutusunu işaretleyebilmek için önce sözleşmeyi açınız.</p>
-        )}
-        {errors.contractAccepted && (
-          <p className="field-error">{errors.contractAccepted?.message as string}</p>
-        )}
-      </label>
+      <LockedConsent
+        name="contractAccepted"
+        documentUrl={CONTRACT_URL}
+        documentTitle="PROJE BAZLI İŞ SÖZLEŞMESİ"
+        intro="Lütfen onaylamadan önce sözleşmeyi açıp okuyunuz:"
+      >
+        Yukarıdaki sözleşme maddelerini okudum. İşin proje bitimiyle sona ereceğini, sigortamın çalıştığım gün kadar
+        yatacağını, eksik/sahte belge beyanına ilişkin sonuçları ve &quot;%70 Kesinti dahil tüm Cezai Şart&quot;
+        maddelerini anladım, hür irademle kabul ediyorum.
+      </LockedConsent>
 
       <h3 className="section-title">GÖREV VE TARİH BİLGİLERİ</h3>
 
@@ -87,6 +108,18 @@ export default function Step4() {
         <input type="checkbox" {...register('infoConfirmed')} className="check-box mt-0.5" />
         {errors.infoConfirmed && <p className="field-error">{errors.infoConfirmed?.message as string}</p>}
       </label>
+
+      <h3 className="section-title">KİŞİSEL VERİLERİN KORUNMASI (KVKK)</h3>
+
+      <LockedConsent
+        name="kvkkAccepted"
+        documentUrl={KVKK_URL}
+        documentTitle="KVKK AYDINLATMA METNİ VE AÇIK RIZA BEYANI"
+        intro="Lütfen onaylamadan önce aydınlatma metnini açıp okuyunuz:"
+      >
+        KVKK Aydınlatma Metni&apos;ni okudum ve anladım. Adli sicil kaydım dahil kişisel verilerimin belirtilen amaçlarla
+        işlenmesine ve yurt dışında bulunan bulut depolama hizmetinde saklanmasına açık rıza veriyorum.
+      </LockedConsent>
 
       <div>
         <span className="field-label">

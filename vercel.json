@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "pages/api/submit.ts": {
+      "maxDuration": 60
+    }
+  }
+}

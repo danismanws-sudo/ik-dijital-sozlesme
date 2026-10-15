@@ -15,7 +15,7 @@ const requiredFile = (message: string) =>
  */
 export const step1Schema = yup.object({
   hireDate: requiredDate('İşe giriş tarihi zorunlu'),
-  fullName: yup.string().trim().required('İsim Soyisim zorunlu'),
+  fullName: yup.string().trim().max(60, 'En fazla 60 karakter').required('İsim Soyisim zorunlu'),
   tcNo: yup
     .string()
     .required('TC kimlik no zorunlu')
@@ -38,7 +38,7 @@ export const step2Schema = yup.object({
   // so the submitted value is the full 26-character IBAN.
   iban: yup
     .string()
-    .transform((value) => (value ? `TR${value}` : value))
+    .transform((value) => (value && !value.startsWith('TR') ? `TR${value}` : value))
     .required('IBAN zorunlu')
     .matches(/^TR\d{24}$/, "IBAN TR'den sonra 24 rakam olmalı"),
 });
@@ -57,7 +57,7 @@ export const step3Schema = yup.object({
  */
 export const step4Schema = yup.object({
   contractAccepted: yup.boolean().oneOf([true], 'Sözleşme kabul edilmelidir').required(),
-  projectName: yup.string().trim().required('Proje / mağaza adı zorunlu'),
+  projectName: yup.string().trim().max(80, 'En fazla 80 karakter').required('Proje / mağaza adı zorunlu'),
   startDate: requiredDate('İş başlangıç tarihi zorunlu'),
   endDate: requiredDate('İş bitiş tarihi zorunlu').test(
     'after-start',
@@ -69,5 +69,9 @@ export const step4Schema = yup.object({
     }
   ),
   infoConfirmed: yup.boolean().oneOf([true], 'Beyan onayı zorunlu').required(),
+  kvkkAccepted: yup.boolean().oneOf([true], 'KVKK onayı zorunlu').required(),
   signature: yup.string().required('Lütfen imzanızı çiziniz'),
 });
+
+/** Everything except the file inputs; the API checks the uploaded files separately. */
+export const serverSchema = step1Schema.concat(step2Schema).concat(step4Schema);

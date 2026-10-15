@@ -1,4 +1,5 @@
 // pages/index.tsx
+import Head from "next/head";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Wizard from "../components/Wizard";
@@ -26,6 +27,7 @@ export type FormValues = {
   startDate: string;
   endDate: string;
   infoConfirmed: boolean;
+  kvkkAccepted: boolean;
   signature?: string;
 };
 
@@ -42,11 +44,16 @@ export default function Home() {
       status: "",
       contractAccepted: false,
       infoConfirmed: false,
+      kvkkAccepted: false,
     },
   });
 
   return (
     <FormProvider {...methods}>
+      <Head>
+        <title>Dijital Sözleşme Formu | Detay Stok Sayım</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
       <header className="bg-gradient-to-br from-primary via-indigo-600 to-accent px-4 pb-28 pt-10 text-center text-white">
         <div className="mx-auto inline-block rounded-2xl bg-white px-4 shadow-xl">
           <img src="/LOGO/LOGO%202.jpg" alt="Detay Stok Sayım" className="h-24 w-auto" />

@@ -7,6 +7,7 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
 import LoadingOverlay from "./LoadingOverlay";
+import { encodeUpload } from "../lib/upload";
 import { step1Schema, step2Schema, step3Schema, step4Schema } from "../lib/validationSchema";
 
 const steps = [
@@ -20,6 +21,8 @@ export default function Wizard() {
   const [current, setCurrent] = useState(0);
   const { handleSubmit, trigger } = useFormContext();
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [done, setDone] = useState(false);
 
   const onNext = async () => {
     const valid = await trigger(steps[current].fields);
@@ -29,22 +32,50 @@ export default function Wizard() {
   const onPrev = () => setCurrent((c) => Math.max(c - 1, 0));
 
   const onSubmit = async (data: any) => {
+    if (submitting) return;
     setSubmitting(true);
-    const WEB_APP_URL = "https://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@github.com/danismanws-sudo/ik-dijital-sozlesme.git";
+    setSubmitError("");
     try {
-      const res = await fetch(WEB_APP_URL, {
+      const { idFront, idBack, criminalRecord, ...values } = data;
+      const files = {
+        idFront: await encodeUpload(idFront, "Kimlik ön yüzü"),
+        idBack: await encodeUpload(idBack, "Kimlik arka yüzü"),
+        criminalRecord: await encodeUpload(criminalRecord, "Adli sicil kaydı"),
+      };
+      const res = await fetch("/api/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ values, files }),
       });
-      if (!res.ok) throw new Error("Sunucu hatası");
-      alert("Form başarıyla gönderildi!");
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(
+          res.status === 413
+            ? "Yüklenen dosyalar çok büyük. Lütfen daha küçük dosyalar seçin."
+            : result.error || "Sunucuya ulaşılamadı. Lütfen tekrar deneyin."
+        );
+      }
+      setDone(true);
     } catch (e: any) {
-      alert(`Gönderim hatası: ${e.message}`);
+      setSubmitError(e.message);
     } finally {
       setSubmitting(false);
     }
   };
+
+  if (done) {
+    return (
+      <div className="rounded-3xl bg-white p-8 text-center shadow-xl shadow-primary/10 ring-1 ring-slate-100 sm:p-12">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-3xl text-white">
+          ✓
+        </div>
+        <h2 className="mt-5 text-xl font-bold text-primary">Sözleşmeniz alındı</h2>
+        <p className="mt-2 text-slate-600">
+          Bilgileriniz ve imzalı sözleşmeniz İnsan Kaynakları birimine iletildi. Bu sayfayı kapatabilirsiniz.
+        </p>
+      </div>
+    );
+  }
 
   const CurrentStep = steps[current].component;
 
@@ -57,6 +88,11 @@ export default function Wizard() {
           {steps[current].label}
         </h2>
         <CurrentStep />
+        {submitError && (
+          <p className="mt-6 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-accent">
+            {submitError}
+          </p>
+        )}
         <div className="flex justify-between mt-8">
           {current > 0 && (
             <button type="button" onClick={onPrev} className="btn-secondary">
