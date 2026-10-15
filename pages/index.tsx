@@ -64,6 +64,7 @@ export default function Home() {
       <main className="mx-auto -mt-20 max-w-2xl px-4 pb-12">
         <Wizard />
       </main>
+      <footer className="pb-6 text-center text-xs text-slate-400">{process.env.NEXT_PUBLIC_BUILD_INFO}</footer>
     </FormProvider>
   );
 }
