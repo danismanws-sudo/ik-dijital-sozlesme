@@ -31,28 +31,29 @@ const ROOT_FOLDER = 'Detay İK Dijital Sözleşme';
 const ALLOWED_TYPES: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'application/pdf': 'pdf' };
 const MAX_FILE_BYTES = 3 * 1024 * 1024;
 
-const SHEET_HEADER = [
-  'Kayıt Zamanı',
-  'İşe Giriş Tarihi',
-  'İsim Soyisim',
-  'TC Kimlik',
-  'Telefon',
-  'Doğum Tarihi',
-  'Sorumlu Yönetici',
-  'Durumu',
-  'Oturduğu Semt',
-  'IBAN',
-  'Proje / Mağaza',
-  'İş Başlangıç Tarihi',
-  'İş Bitiş Tarihi',
-  'Sözleşme Onayı',
-  'Beyan Onayı',
-  'KVKK Onayı',
-  'Kimlik Ön Yüz',
-  'Kimlik Arka Yüz',
-  'Adli Sicil',
-  'Sözleşme PDF',
-  'KVKK PDF',
+// Column order must match the row written in the handler below.
+export const SHEET_COLUMNS = [
+  { title: 'Kayıt Zamanı', width: 125 },
+  { title: 'İşe Giriş Tarihi', width: 105 },
+  { title: 'İsim Soyisim', width: 170 },
+  { title: 'TC Kimlik', width: 110 },
+  { title: 'Telefon', width: 130 },
+  { title: 'Doğum Tarihi', width: 100 },
+  { title: 'Sorumlu Yönetici', width: 150 },
+  { title: 'Durumu', width: 75 },
+  { title: 'Oturduğu Semt', width: 130 },
+  { title: 'IBAN', width: 235 },
+  { title: 'Proje / Mağaza', width: 170 },
+  { title: 'İş Başlangıç Tarihi', width: 105 },
+  { title: 'İş Bitiş Tarihi', width: 100 },
+  { title: 'Sözleşme Onayı', width: 85 },
+  { title: 'Beyan Onayı', width: 80 },
+  { title: 'KVKK Onayı', width: 80 },
+  { title: 'Kimlik Ön Yüz', width: 95 },
+  { title: 'Kimlik Arka Yüz', width: 95 },
+  { title: 'Adli Sicil', width: 90 },
+  { title: 'Sözleşme PDF', width: 95 },
+  { title: 'KVKK PDF', width: 90 },
 ];
 const TC_COLUMN = 'D';
 
@@ -100,7 +101,7 @@ async function dailySheet(date: string, dayKey: string, parentId: string) {
     parentId,
     appProperties: { ikDay: dayKey },
   });
-  await writeHeader(sheet.id, SHEET_HEADER);
+  await writeHeader(sheet.id, SHEET_COLUMNS, 3);
   return sheet;
 }
 
@@ -192,11 +193,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       'Evet',
       'Evet',
       'Evet',
-      frontFile.webViewLink || '',
-      backFile.webViewLink || '',
-      recordFile.webViewLink || '',
-      contractFile.webViewLink || '',
-      kvkkFile.webViewLink || '',
+      { link: frontFile.webViewLink || '', label: 'Görüntüle' },
+      { link: backFile.webViewLink || '', label: 'Görüntüle' },
+      { link: recordFile.webViewLink || '', label: 'Görüntüle' },
+      { link: contractFile.webViewLink || '', label: 'Sözleşme' },
+      { link: kvkkFile.webViewLink || '', label: 'KVKK' },
     ]);
 
     // The record is saved at this point; a failed e-mail must not make the employee resubmit.

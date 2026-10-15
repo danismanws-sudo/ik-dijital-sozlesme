@@ -123,37 +123,104 @@ export async function getColumn(spreadsheetId: string, column: string): Promise<
   return (json.values || []).map((row: string[]) => row[0] ?? '');
 }
 
-/** Values are written RAW so TC / phone / IBAN stay text and are not turned into numbers. */
-export async function appendRow(spreadsheetId: string, row: string[]): Promise<void> {
-  await google(
-    `${SHEETS}/${spreadsheetId}/values/${encodeURIComponent('A1')}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
-    { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ values: [row] }) }
+export type Cell = string | { link: string; label: string };
+
+/**
+ * Appends one row. Plain values are written as text so TC / phone / IBAN are not
+ * turned into numbers; links become "Görüntüle"-style hyperlinks. appendCells
+ * does not copy the header's formatting into the new row.
+ */
+export async function appendRow(spreadsheetId: string, row: Cell[]): Promise<void> {
+  const values = row.map((cell) =>
+    typeof cell === 'string'
+      ? { userEnteredValue: { stringValue: cell } }
+      : {
+          userEnteredValue: { stringValue: cell.link ? cell.label : '' },
+          userEnteredFormat: cell.link ? { textFormat: { link: { uri: cell.link } } } : undefined,
+        }
   );
+  await sheetsBatch(spreadsheetId, [
+    { appendCells: { sheetId: 0, rows: [{ values }], fields: 'userEnteredValue,userEnteredFormat.textFormat.link' } },
+  ]);
 }
 
-/** Writes the header row, makes it bold and frozen. */
-export async function writeHeader(spreadsheetId: string, header: string[]): Promise<void> {
-  await google(`${SHEETS}/${spreadsheetId}/values/${encodeURIComponent('A1')}?valueInputOption=RAW`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ values: [header] }),
-  });
-  await google(`${SHEETS}/${spreadsheetId}:batchUpdate`, {
+const sheetsBatch = (spreadsheetId: string, requests: object[]) =>
+  google(`${SHEETS}/${spreadsheetId}:batchUpdate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      requests: [
-        {
-          repeatCell: {
-            range: { sheetId: 0, startRowIndex: 0, endRowIndex: 1 },
-            cell: { userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.9, green: 0.92, blue: 0.98 } } },
-            fields: 'userEnteredFormat(textFormat,backgroundColor)',
+    body: JSON.stringify({ requests }),
+  });
+
+const BRAND = { red: 0.153, green: 0.251, blue: 0.604 };
+const WHITE = { red: 1, green: 1, blue: 1 };
+const BAND = { red: 0.933, green: 0.945, blue: 0.996 };
+
+/** Writes the header row and styles the sheet: brand header, banded rows, column widths, frozen panes. */
+export async function writeHeader(
+  spreadsheetId: string,
+  columns: { title: string; width: number }[],
+  frozenColumns = 0
+): Promise<void> {
+  const all = { sheetId: 0, startColumnIndex: 0, endColumnIndex: columns.length };
+  await sheetsBatch(spreadsheetId, [
+    {
+      updateCells: {
+        start: { sheetId: 0, rowIndex: 0, columnIndex: 0 },
+        rows: [{ values: columns.map((c) => ({ userEnteredValue: { stringValue: c.title } })) }],
+        fields: 'userEnteredValue',
+      },
+    },
+    // Data rows: plain text, vertically centred; colours come from the banding below.
+    {
+      repeatCell: {
+        range: { ...all, startRowIndex: 1 },
+        cell: { userEnteredFormat: { textFormat: { bold: false, fontSize: 10 }, verticalAlignment: 'MIDDLE' } },
+        fields: 'userEnteredFormat(textFormat,backgroundColor,verticalAlignment)',
+      },
+    },
+    {
+      repeatCell: {
+        range: { ...all, startRowIndex: 0, endRowIndex: 1 },
+        cell: {
+          userEnteredFormat: {
+            textFormat: { bold: true, fontSize: 10, foregroundColor: WHITE },
+            horizontalAlignment: 'CENTER',
+            verticalAlignment: 'MIDDLE',
+            wrapStrategy: 'WRAP',
           },
         },
-        { updateSheetProperties: { properties: { sheetId: 0, gridProperties: { frozenRowCount: 1 } }, fields: 'gridProperties.frozenRowCount' } },
-      ],
-    }),
-  });
+        fields: 'userEnteredFormat(textFormat,horizontalAlignment,verticalAlignment,wrapStrategy)',
+      },
+    },
+    {
+      addBanding: {
+        bandedRange: {
+          range: all,
+          rowProperties: { headerColor: BRAND, firstBandColor: WHITE, secondBandColor: BAND },
+        },
+      },
+    },
+    {
+      updateDimensionProperties: {
+        range: { sheetId: 0, dimension: 'ROWS', startIndex: 0, endIndex: 1 },
+        properties: { pixelSize: 42 },
+        fields: 'pixelSize',
+      },
+    },
+    ...columns.map((c, i) => ({
+      updateDimensionProperties: {
+        range: { sheetId: 0, dimension: 'COLUMNS', startIndex: i, endIndex: i + 1 },
+        properties: { pixelSize: c.width },
+        fields: 'pixelSize',
+      },
+    })),
+    {
+      updateSheetProperties: {
+        properties: { sheetId: 0, title: 'Kayıtlar', gridProperties: { frozenRowCount: 1, frozenColumnCount: frozenColumns } },
+        fields: 'title,gridProperties.frozenRowCount,gridProperties.frozenColumnCount',
+      },
+    },
+  ]);
 }
 
 // ---------------------------------------------------------------- Gmail
